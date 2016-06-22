@@ -1,4 +1,4 @@
-/*! jQuery Tiny Layer - v0.1.0
+/*! jQuery Tiny Layer - v0.2.0
  * https://github.com/floriancapelle/jquery-tiny-layer
  * Licensed MIT
  */
