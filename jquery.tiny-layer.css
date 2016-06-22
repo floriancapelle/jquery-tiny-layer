@@ -36,7 +36,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: red;
+    color: #333;
+    font-size: 12px;
+    background-color: #ebebeb;
+    border: 0;
+    border-radius: 3px;
 }
 .tiny-layer-item .layer-item-close .svg-icon {
     color: #fff;
