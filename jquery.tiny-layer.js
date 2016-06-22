@@ -9,17 +9,30 @@
     var api = {};
 
     /* Configuration
-     * closeBtnMarkup {string} - markup of the close button to be appended, false if not
-     * autoCloseOthers {bool} - close other open layers when opening a layer
-     * events {object} - supply jQuery-like events with delegation, delegateTarget is item root
+     * @property {object} conf
+     * @property {string} conf.appendTo - where to append the wrapper
+     * @property {string} conf.triggerSelector - will be used as filter for elements triggering a layer in click event delegation for body
+     * @property {string} conf.triggerTargetKey - data key of trigger element for layer id
+     * @property {string} conf.layerItemClass
+     * @property {string} conf.layerItemContentClass
+     * @property {string} conf.layerItemTpl - used to create layer items with jQuery
+     * @property {object} conf.cssClasses - css classes for open and close handling
+     * @property {object} conf.layerOptions - options per layer
+     * @property {string} conf.layerOptions.closeBtnMarkup - markup of the close button to be appended, false if not
+     * @property {bool} conf.layerOptions.autoCloseOthers - close other open layers when opening a layer
+     * @property {bool} conf.layerOptions.closeOnOverlayClick - close the layer whose overlay was clicked
+     * @property {array} conf.layerOptions.events - supply jQuery-like events with delegation, delegateTarget is item root
      */
-    var defaults = {
+    var conf = {
         appendTo: 'body',
         triggerSelector: '[data-layer-target]',
         triggerTargetKey: 'layerTarget',
         layerItemClass: 'tiny-layer-item',
         layerItemContentClass: 'layer-item-content',
         layerItemTpl: '<article class="tiny-layer-item"><div class="layer-item-content"></div></article>',
+        cssClasses: {
+            isVisible: 'is-visible'
+        },
         layerOptions: {
             closeBtnMarkup: '<button class="layer-item-close" type="button">x</button>',
             autoCloseOthers: true,
@@ -27,24 +40,19 @@
             events: []
         }
     };
-    var conf = {};
     var $root;
     var $layerItemTpl;
 
     /*
      * @TODO
-     * - close icon mit css statt svg icon
-     * - animationen bei open und close
+     * - update configuration comments
      */
 
     /**
      * Initialize the component
-     * @param {{}} customConf - custom configuration to overwrite the defaults
      * @returns {{}}
      */
-    function init( customConf ) {
-        conf = $.extend(true, {}, defaults, customConf);
-
+    function init() {
         // create wrapper and append to configured element
         $root = $('<aside class="tiny-layer"></aside>');
         $layerItemTpl = $(conf.layerItemTpl);
@@ -77,17 +85,6 @@
         $root.on('click.tinyLayer', '.layer-item-close', function( event ) {
             close($(this).closest('.' + conf.layerItemClass).data('id'));
         });
-
-        // Reveal public api
-        $.extend(api, {
-            open: open,
-            close: close,
-            // replace with no-op to just call this once
-            init: function() {return api;}
-        });
-        $.tinyLayer = api;
-
-        return api;
     }
 
     /**
@@ -153,11 +150,14 @@
 
         if ( layerOptions.autoCloseOthers === true ) {
             // close every child layer that's visible
-            $root.children('.is-visible').each(function() {
+            $root.children(conf.cssClasses.isVisible).each(function() {
                 close($(this).data('id'));
             });
         }
-        $layer.addClass('is-visible');
+
+        // force layout, to enable css transitions
+        $layer.width();
+        $layer.addClass(conf.cssClasses.isVisible);
 
         return api;
     }
@@ -170,8 +170,14 @@
     function close( layerId ) {
         if ( !layerId ) return api;
 
-        //$root.children('[data-id="' + layerId + '"]').removeClass('is-visible');
-        getLayerInRoot(layerId).remove();
+        var $layer = getLayerInRoot(layerId);
+
+        // wait for transitionend event to remove the layer
+        $layer.on('transitionend.tinyLayer webkitTransitionEnd.tinyLayer', function( event ) {
+            if ( !$layer.is(event.target) ) return;
+            $layer.remove();
+        });
+        $layer.removeClass(conf.cssClasses.isVisible);
 
         return api;
     }
@@ -194,8 +200,16 @@
         return $layer;
     }
 
-    $.tinyLayer = {
-        init: init
-    };
+
+    $.extend(api, {
+        defaults: conf,
+        open: open,
+        close: close
+    });
+
+    $(function() {
+        init();
+        $.tinyLayer = api;
+    });
 
 }(jQuery));
