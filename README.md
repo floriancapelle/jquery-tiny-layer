@@ -1,5 +1,5 @@
 # tinyLayer
-tinyLayer is a lightweight jQuery plugin for basic layers.
+tinyLayer is a lightweight jQuery plugin for fully customizable basic layers.
 
 Open a layer by clicking any element you want which has a custom attribute containing the id of the target layer.
 Alternatively you can use the open or close methods on the API.
