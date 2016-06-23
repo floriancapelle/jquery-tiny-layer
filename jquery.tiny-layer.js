@@ -43,11 +43,6 @@
     var $root;
     var $layerItemTpl;
 
-    /*
-     * @TODO
-     * - update configuration comments
-     */
-
     /**
      * Initialize the component
      * @returns {{}}
