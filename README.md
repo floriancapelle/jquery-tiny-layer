@@ -34,6 +34,10 @@ Then, before your closing ```<body>``` tag add:
 TODO
 - data attribute options
 - $.tinyLayer.close without param will close all layers
+- demo optimization
+- ajax loading
+- close on esc
+- New name: jQuery TopModal
 
 ### API
 
