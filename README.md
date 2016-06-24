@@ -9,6 +9,10 @@ Open a layer by clicking any element you want which has a custom attribute conta
 - Requires jQuery 1.8+
 - Browser Support: Evergreen browsers & IE9+
 
+## Demo
+
+- Open the index.html
+
 ## Install
 
 Download latest release and place the following css and js files in the corresponding directories.
