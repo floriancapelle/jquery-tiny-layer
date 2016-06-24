@@ -46,8 +46,8 @@ Modify `$.tinyLayer.defaults` to change the default configuration.
 
 Key | Type | Default | Description
 ------ | ---- | ------- | -----------
-triggerSelector | string | '[data-layer-target]' | will be used as filter for elements triggering a layer in click event delegation for body
-triggerTargetKey | string | 'layerTarget' | data key of trigger element for layer id
+triggerSelector | string | '[data-layer-target]' | used as filter selector in click event delegation for body
+triggerTargetKey | string | 'layerTarget' | data object key containing layer id on trigger element
 layerItemClass | string | 'tiny-layer-item' | -
 layerItemContentClass | string | 'layer-item-content' | -
 layerItemTpl | string | see js file | used to create layer items with jQuery
@@ -55,7 +55,7 @@ visibilityToggleClass | string | 'is-visible' | css class for open and close han
 layerOptions.closeBtnMarkup | string | see js file | markup of the close button to be appended, false if not
 layerOptions.autoCloseOthers | boolean | true | close other open layers when opening a layer
 layerOptions.closeOnOverlayClick | boolean | true | close the layer whose overlay was clicked
-layerOptions.events | array | [] | supply jQuery-like events with delegation, delegateTarget is item root
+layerOptions.events | array | [] | supply jQuery-like events with delegation, delegateTarget is layer item
 
 ## License
 
