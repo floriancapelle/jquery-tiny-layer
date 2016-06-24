@@ -58,7 +58,7 @@ layerOptions.autoCloseOthers | boolean | true | close other open layers when ope
 layerOptions.closeOnOverlayClick | boolean | true | close the layer whose overlay was clicked
 layerOptions.events | array | [] | supply jQuery-like events with delegation, delegateTarget is item root
 
-## LICENSE
+## License
 
 [MIT License](https://github.com/floriancapelle/jquery-tiny-layer/blob/master/LICENSE)
 
