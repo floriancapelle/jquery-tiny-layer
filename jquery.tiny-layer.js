@@ -18,13 +18,13 @@
 
     /* Configuration
      * @property {object} conf
-     * @property {string} conf.appendTo - where to append the wrapper
      * @property {string} conf.triggerSelector - will be used as filter for elements triggering a layer in click event delegation for body
      * @property {string} conf.triggerTargetKey - data key of trigger element for layer id
      * @property {string} conf.layerItemClass
      * @property {string} conf.layerItemContentClass
      * @property {string} conf.layerItemTpl - used to create layer items with jQuery
-     * @property {object} conf.cssClasses - css classes for open and close handling
+     * @property {object} conf.visibilityToggleClass - css class for open and close handling
+     * ------------------
      * @property {object} conf.layerOptions - options per layer
      * @property {string} conf.layerOptions.closeBtnMarkup - markup of the close button to be appended, false if not
      * @property {bool} conf.layerOptions.autoCloseOthers - close other open layers when opening a layer
@@ -32,15 +32,12 @@
      * @property {array} conf.layerOptions.events - supply jQuery-like events with delegation, delegateTarget is item root
      */
     var conf = {
-        appendTo: 'body',
         triggerSelector: '[data-layer-target]',
         triggerTargetKey: 'layerTarget',
         layerItemClass: 'tiny-layer-item',
         layerItemContentClass: 'layer-item-content',
         layerItemTpl: '<article class="tiny-layer-item"><div class="layer-item-content"></div></article>',
-        cssClasses: {
-            isVisible: 'is-visible'
-        },
+        visibilityToggleClass: 'is-visible',
         layerOptions: {
             closeBtnMarkup: '<button class="layer-item-close" type="button">x</button>',
             autoCloseOthers: true,
@@ -57,14 +54,16 @@
      */
     function init() {
         // create wrapper and append to configured element
+        var $body = $('body');
         $root = $('<aside class="tiny-layer"></aside>');
         $layerItemTpl = $(conf.layerItemTpl);
 
-        $(conf.appendTo).append($root);
+        // append wrapper to body
+        $body.append($root);
 
         // trigger event handling
         // open target layer on click on a trigger
-        $('body').on('click.tinyLayer', conf.triggerSelector, function( event ) {
+        $body.on('click.tinyLayer', conf.triggerSelector, function( event ) {
             var $trigger = $(this);
             var layerId = $trigger.data(conf.triggerTargetKey);
 
@@ -134,7 +133,7 @@
 
     /**
      * open a layer
-     * @param layerId
+     * @param {string} layerId
      * @returns {{}}
      */
     function open( layerId ) {
@@ -153,21 +152,21 @@
 
         if ( layerOptions.autoCloseOthers === true ) {
             // close every child layer that's visible
-            $root.children(conf.cssClasses.isVisible).each(function() {
+            $root.children(conf.visibilityToggleClass).each(function() {
                 close($(this).data('id'));
             });
         }
 
         // force layout, to enable css transitions
         $layer.width();
-        $layer.addClass(conf.cssClasses.isVisible);
+        $layer.addClass(conf.visibilityToggleClass);
 
         return api;
     }
 
     /**
      * Close and remove a layer
-     * @param layerId
+     * @param {string} layerId
      * @returns {{}}
      */
     function close( layerId ) {
@@ -180,14 +179,14 @@
             if ( !$layer.is(event.target) ) return;
             $layer.remove();
         });
-        $layer.removeClass(conf.cssClasses.isVisible);
+        $layer.removeClass(conf.visibilityToggleClass);
 
         return api;
     }
 
     /**
      * Get layer element by id in wrapper, match layerId with data property
-     * @param layerId - must match the
+     * @param {string} layerId
      * @returns {*|HTMLElement}
      */
     function getLayerInRoot( layerId ) {

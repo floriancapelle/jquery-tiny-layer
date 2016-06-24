@@ -46,13 +46,12 @@ Modify `$.tinyLayer.defaults` to change the default configuration.
 
 Key | Type | Default | Description
 ------ | ---- | ------- | -----------
-appendTo | string | 'body' | where to append the wrapper
 triggerSelector | string | '[data-layer-target]' | will be used as filter for elements triggering a layer in click event delegation for body
 triggerTargetKey | string | 'layerTarget' | data key of trigger element for layer id
 layerItemClass | string | 'tiny-layer-item' | -
 layerItemContentClass | string | 'layer-item-content' | -
 layerItemTpl | string | see js file | used to create layer items with jQuery
-cssClasses.isVisible | string | 'is-visible' | css class for open and close handling
+visibilityToggleClass | string | 'is-visible' | css class for open and close handling
 layerOptions.closeBtnMarkup | string | see js file | markup of the close button to be appended, false if not
 layerOptions.autoCloseOthers | boolean | true | close other open layers when opening a layer
 layerOptions.closeOnOverlayClick | boolean | true | close the layer whose overlay was clicked
