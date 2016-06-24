@@ -5,6 +5,7 @@ Open a layer by clicking any element you want which has a custom attribute conta
 Alternatively you can use the open or close methods on the API.
 
 - Layer has fully customizable CSS & HTML
+- Layer is positioned with CSS only by using flex
 - just open & close
 - Requires jQuery 2+
 - Browser Support: Evergreen & IE9+
@@ -12,8 +13,18 @@ Alternatively you can use the open or close methods on the API.
 ## Install
 
 - Download latest release
-- insert css & js files
-- ... TODO
+
+Just add a link to the css file in your `<head>`:
+```html
+<link rel="stylesheet" href="css/jquery.tiny-layer.css"/>
+```
+
+Then, before your closing ```<body>``` tag add:
+```html
+<script src="js/jquery.tiny-layer.js"></script>
+```
+
+*Make sure to check and maybe edit the paths to fit your file structure.*
 
 ## Usage
 
