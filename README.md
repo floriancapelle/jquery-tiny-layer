@@ -1,5 +1,5 @@
 # tinyLayer
-tinyLayer is a lightweight jQuery plugin for fully customizable basic layers.
+tinyLayer is a lightweight jQuery plugin for fully customizable basic layers, notifications, modals or any feature alike.
 
 Open a layer by clicking any element you want which has a custom attribute containing the id of the target layer.
 
@@ -63,4 +63,5 @@ layerOptions.events | array | [] | supply jQuery-like events with delegation, de
 
 ------------------
 
-Please feel free to reach out to me if you have any questions or suggestions.
+## Questions & Contribution
+Please feel free to reach out to me if you have any questions, suggestions or contributions.
