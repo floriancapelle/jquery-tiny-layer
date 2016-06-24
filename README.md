@@ -2,17 +2,16 @@
 tinyLayer is a lightweight jQuery plugin for fully customizable basic layers.
 
 Open a layer by clicking any element you want which has a custom attribute containing the id of the target layer.
-Alternatively you can use the open or close methods on the API.
 
-- Layer has fully customizable CSS & HTML
+- Layer CSS & HTML is fully customizable
 - Layer is positioned with CSS only by using flex
-- just open & close
-- Requires jQuery 2+
-- Browser Support: Evergreen & IE9+
+- Simple API with just an open & close method
+- Requires jQuery 1.8+
+- Browser Support: Evergreen browsers & IE9+
 
 ## Install
 
-Download latest release and place the css and js files in the corresponding directories.
+Download latest release and place the following css and js files in the corresponding directories.
 
 Add a link to the css file in your `<head>`:
 ```html
@@ -30,6 +29,7 @@ Then, before your closing ```<body>``` tag add:
 
 TODO
 - data attribute options
+- $.tinyLayer.close without param will close all layers
 
 ### API
 
