@@ -1,4 +1,4 @@
-/*! jQuery Tiny Layer - v0.2.0
+/*! jQuery Tiny Layer - v0.3.0
  * https://github.com/floriancapelle/jquery-tiny-layer
  * Licensed MIT
  */
@@ -17,36 +17,26 @@
     var api = {};
 
     /* Configuration
-     * @property {object} conf
-     * @property {string} conf.triggerSelector - will be used as filter for elements triggering a layer in click event delegation for body
-     * @property {string} conf.triggerTargetKey - data key of trigger element for layer id
-     * @property {string} conf.layerItemClass
-     * @property {string} conf.layerItemContentClass
-     * @property {string} conf.layerItemTpl - used to create layer items with jQuery
-     * @property {object} conf.visibilityToggleClass - css class for open and close handling
-     * ------------------
-     * @property {object} conf.layerOptions - options per layer
-     * @property {string} conf.layerOptions.closeBtnMarkup - markup of the close button to be appended, false if not
-     * @property {bool} conf.layerOptions.autoCloseOthers - close other open layers when opening a layer
-     * @property {bool} conf.layerOptions.closeOnOverlayClick - close the layer whose overlay was clicked
-     * @property {array} conf.layerOptions.events - supply jQuery-like events with delegation, delegateTarget is item root
+     * @see https://github.com/floriancapelle/jquery-tiny-layer/blob/master/README.md for configuration details
      */
     var conf = {
         triggerSelector: '[data-layer-target]',
         triggerTargetKey: 'layerTarget',
         layerItemClass: 'tiny-layer-item',
         layerItemContentClass: 'layer-item-content',
+        layerItemCloseClass: 'layer-item-close',
         layerItemTpl: '<article class="tiny-layer-item"><div class="layer-item-content"></div></article>',
         visibilityToggleClass: 'is-visible',
         layerOptions: {
             closeBtnMarkup: '<button class="layer-item-close" type="button">x</button>',
             autoCloseOthers: true,
             closeOnOverlayClick: true,
+            closeOnEscKey: true,
             events: []
         }
     };
     var $root;
-    var $layerItemTpl;
+    var EVENT_NS = '.tinyLayer';
 
     /**
      * Initialize the component
@@ -56,16 +46,23 @@
         // create wrapper and append to configured element
         var $body = $('body');
         $root = $('<aside class="tiny-layer"></aside>');
-        $layerItemTpl = $(conf.layerItemTpl);
 
         // append wrapper to body
         $body.append($root);
 
         // trigger event handling
         // open target layer on click on a trigger
-        $body.on('click.tinyLayer', conf.triggerSelector, function( event ) {
-            var $trigger = $(this);
-            var layerId = $trigger.data(conf.triggerTargetKey);
+        $body.on('click' + EVENT_NS, function( event ) {
+            var $trigger = $(event.target);
+            var layerId;
+
+            if ( !$trigger.is(conf.triggerSelector) ) return;
+
+            if ( typeof conf.triggerTargetKey === 'function' ) {
+                layerId = conf.triggerTargetKey().call($trigger, event);
+            } else {
+                layerId = $trigger.data(conf.triggerTargetKey);
+            }
 
             // stop if the layer already has been added
             if ( getLayerInRoot(layerId).length ) return;
@@ -74,18 +71,34 @@
             open(layerId);
         });
 
-        // overlay event handling
-        // close layer on click on overlay
-        $root.on('click.tinyLayer', '.' + conf.layerItemClass, function( event ) {
-            var $layer = $(this);
+        // esc key handling
+        $(document).on('keydown' + EVENT_NS, function( event ) {
+            if ( event.keyCode !== 27 ) return;
 
-            if ( !$layer.is(event.target) ) return;
-            if ( $layer.data('options').closeOnOverlayClick !== true ) return;
-            close($layer.data('id'));
+            // close all visible layers if the escape key has been pressed
+            $root.children('.' + conf.visibilityToggleClass).each(function() {
+                var $layer = $(this);
+
+                // close layer if the option is set correctly
+                if ( $layer.data('options').closeOnEscKey === true ) {
+                    close($layer.data('id'));
+                }
+            });
         });
-        // close layer on click on close btn
-        $root.on('click.tinyLayer', '.layer-item-close', function( event ) {
-            close($(this).closest('.' + conf.layerItemClass).data('id'));
+
+        // layer item event handling
+        $root.on('click' + EVENT_NS, function( event ) {
+            var $evtTarget = $(event.target);
+
+            // close layer on click on overlay
+            if ( $evtTarget.hasClass(conf.layerItemClass) ) {
+                if ( $evtTarget.data('options').closeOnOverlayClick !== true ) return;
+                close($evtTarget.data('id'));
+            }
+            // close layer on click on close btn
+            else if ( $evtTarget.hasClass(conf.layerItemCloseClass) ) {
+                close($evtTarget.closest('.' + conf.layerItemClass).data('id'));
+            }
         });
     }
 
@@ -104,7 +117,7 @@
         if ( typeof layerContent === 'undefined' ) return false;
 
         // create a new layer item
-        var $newLayer = $layerItemTpl.clone();
+        var $newLayer = $(conf.layerItemTpl);
         var $newLayerContent = $newLayer.children('.' + conf.layerItemContentClass);
         // merge options with defaults and options on the source layer tag if defined
         // like: data-close-btn-markup="false" => closeBtnMarkup: false
@@ -165,17 +178,22 @@
     }
 
     /**
-     * Close and remove a layer
-     * @param {string} layerId
+     * Close and remove a layer or all layers if no layer id has been supplied
+     * @param {string} [layerId]
      * @returns {{}}
      */
     function close( layerId ) {
-        if ( !layerId ) return api;
+        var $layer;
 
-        var $layer = getLayerInRoot(layerId);
+        if ( layerId ) {
+            $layer = getLayerInRoot(layerId);
+            if ( !$layer.length ) return api;
+        } else {
+            $layer = $root.children();
+        }
 
         // wait for transitionend event to remove the layer
-        $layer.on('transitionend.tinyLayer webkitTransitionEnd.tinyLayer', function( event ) {
+        $layer.on('transitionend' + EVENT_NS + ' webkitTransitionEnd' + EVENT_NS, function( event ) {
             if ( !$layer.is(event.target) ) return;
             $layer.remove();
         });
@@ -204,13 +222,15 @@
 
 
     $.extend(api, {
-        defaults: conf,
+        config: conf,
         open: open,
         close: close
     });
 
     $(function() {
         init();
+
+        // expose public api as soon as the document is ready
         $.tinyLayer = api;
     });
 }));

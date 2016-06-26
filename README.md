@@ -32,12 +32,11 @@ Then, before your closing ```<body>``` tag add:
 ## Usage
 
 TODO
-- data attribute options
-- $.tinyLayer.close without param will close all layers
+- data attribute options usage demo
 - demo optimization
 - ajax loading
-- close on esc
 - New name: jQuery TopModal
+- BEM
 
 ### API
 
@@ -46,23 +45,25 @@ Namespace is `$.tinyLayer`
 Method | Arguments | Description
 ------ | -------- | -----------
 open | layerId : string (e.g. '#layer-1') | open the target layer
-close | layerId : string (e.g. '#layer-1') | close the target layer
+close | [layerId : string (e.g. '#layer-1')] | close the target layer or all layers
 
 ### Configuration
 
-Modify `$.tinyLayer.defaults` to change the default configuration.
+Modify `$.tinyLayer.config` to change the configuration anytime.
 
 Key | Type | Default | Description
 ------ | ---- | ------- | -----------
 triggerSelector | string | '[data-layer-target]' | used as filter selector in click event delegation for body
-triggerTargetKey | string | 'layerTarget' | data object key containing layer id on trigger element
+triggerTargetKey | string|function | 'layerTarget' | data object key containing layer id on trigger element. Or use function (context is trigger element and param is event object)
 layerItemClass | string | 'tiny-layer-item' | -
 layerItemContentClass | string | 'layer-item-content' | -
+layerItemCloseClass | string | 'layer-item-close' | -
 layerItemTpl | string | see js file | used to create layer items with jQuery
 visibilityToggleClass | string | 'is-visible' | css class for open and close handling
 layerOptions.closeBtnMarkup | string | see js file | markup of the close button to be appended, false if not
-layerOptions.autoCloseOthers | boolean | true | close other open layers when opening a layer
-layerOptions.closeOnOverlayClick | boolean | true | close the layer whose overlay was clicked
+layerOptions.autoCloseOthers | boolean | true | close other open layers when opening this layer
+layerOptions.closeOnOverlayClick | boolean | true | close this layer when its overlay was clicked
+layerOptions.closeOnEscKey | boolean | true | close this layer when the escape key was pressed
 layerOptions.events | array | [] | supply jQuery-like events with delegation, delegateTarget is layer item
 
 ## License
