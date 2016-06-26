@@ -11,7 +11,7 @@ Open a layer by clicking any element you want which has a custom attribute conta
 
 ## Demo
 
-- Open the index.html
+Open the index.html for examples.
 
 ## Install
 
@@ -32,11 +32,10 @@ Then, before your closing ```<body>``` tag add:
 ## Usage
 
 TODO
-- data attribute options usage demo
 - demo optimization
-- ajax loading
-- New name: jQuery TopModal
+  - ajax loading
 - BEM
+- New name: jQuery TopModal
 
 ### API
 
@@ -50,6 +49,9 @@ close | [layerId : string (e.g. '#layer-1')] | close the target layer or all lay
 ### Configuration
 
 Modify `$.tinyLayer.config` to change the configuration anytime.
+
+All `layerOptions` can also be set via data-attributes on the layer element.
+See the demo for examples.
 
 Key | Type | Default | Description
 ------ | ---- | ------- | -----------
