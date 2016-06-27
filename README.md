@@ -32,6 +32,7 @@ Then, before your closing ```<body>``` tag add:
 ## Usage
 
 TODO
+- remove flex properties from close btn
 - demo optimization
   - ajax loading
 - BEM
