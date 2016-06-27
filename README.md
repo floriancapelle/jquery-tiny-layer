@@ -33,6 +33,7 @@ Then, before your closing ```<body>``` tag add:
 
 TODO
 - remove flex properties from close btn
+- callbacks: onBeforeOpen, onOpen, onBeforeClose, onClose
 - demo optimization
   - ajax loading
 - BEM
