@@ -32,7 +32,6 @@ Then, before your closing ```<body>``` tag add:
 ## Usage
 
 TODO
-- callbacks: onBeforeOpen, onOpen, onBeforeClose, onClose
 - demo optimization
   - ajax loading
   - callbacks
