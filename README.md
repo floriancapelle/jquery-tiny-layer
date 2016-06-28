@@ -31,10 +31,7 @@ Then, before your closing ```<body>``` tag add:
 
 ## Usage
 
-TODO
-- demo optimization
-  - ajax loading
-  - callbacks
+See the demo page for examples.
 
 ### API
 
