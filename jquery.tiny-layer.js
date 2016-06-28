@@ -32,7 +32,9 @@
             autoCloseOthers: true,
             closeOnOverlayClick: true,
             closeOnEscKey: true,
-            onCreate: function() {}
+            onCreate: function() {},
+            onOpen: function() {},
+            onClose: function() {}
         }
     };
     var $root;
@@ -159,9 +161,9 @@
             return api;
         }
 
-        var layerOptions = $layer.data('options');
+        var options = $layer.data('options');
 
-        if ( layerOptions.autoCloseOthers === true ) {
+        if ( options.autoCloseOthers === true ) {
             // close every child layer that's visible
             $root.children(conf.visibilityToggleClass).each(function() {
                 close($(this).data('id'));
@@ -171,6 +173,7 @@
         // force layout, to enable css transitions
         $layer.width();
         $layer.addClass(conf.visibilityToggleClass);
+        options.onOpen.call($layer, api);
 
         return api;
     }
@@ -190,12 +193,15 @@
             $layer = $root.children();
         }
 
+        var options = $layer.data('options');
+
         // wait for transitionend event to remove the layer
         $layer.on('transitionend' + EVENT_NS + ' webkitTransitionEnd' + EVENT_NS, function( event ) {
             if ( !$layer.is(event.target) ) return;
             $layer.remove();
         });
         $layer.removeClass(conf.visibilityToggleClass);
+        options.onClose.call($layer, api);
 
         return api;
     }
