@@ -35,7 +35,6 @@ TODO
 - demo optimization
   - ajax loading
   - callbacks
-- BEM
 - New name: jQuery TopModal
 
 ### API
