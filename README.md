@@ -31,11 +31,7 @@ Then, before your closing ```<body>``` tag add:
 
 ## Usage
 
-TODO
-- callbacks: onCreate, onBeforeOpen, onOpen, onBeforeClose, onClose
-- demo optimization
-  - ajax loading
-- New name: jQuery TopModal
+See the demo page for examples.
 
 ### API
 
@@ -58,15 +54,17 @@ Key | Type | Default | Description
 triggerSelector | string | '[data-layer-target]' | used as filter selector in click event delegation for body
 triggerTargetKey | string|function | 'layerTarget' | data object key containing layer id on trigger element. Or use function (context is trigger element and param is event object)
 layerItemClass | string | 'tiny-layer-item' | -
-layerItemContentClass | string | 'layer-item-content' | -
-layerItemCloseClass | string | 'layer-item-close' | -
+layerItemContentClass | string | 'tiny-layer-item__content' | -
+layerItemCloseClass | string | 'tiny-layer-item__close' | -
 layerItemTpl | string | see js file | used to create layer items with jQuery
 visibilityToggleClass | string | 'is-visible' | css class for open and close handling
 layerOptions.closeBtnMarkup | string | see js file | markup of the close button to be appended, false if not
 layerOptions.autoCloseOthers | boolean | true | close other open layers when opening this layer
 layerOptions.closeOnOverlayClick | boolean | true | close this layer when its overlay was clicked
 layerOptions.closeOnEscKey | boolean | true | close this layer when the escape key was pressed
-layerOptions.events | array | [] | supply jQuery-like events with delegation, delegateTarget is layer item
+layerOptions.onCreate | function | no-op | callback, fires after layer item creation
+layerOptions.onOpen | function | no-op | callback, fires when the layer item has been opened
+layerOptions.onClose | function | no-op | callback, fires when the layer item is being closed 
 
 ## License
 

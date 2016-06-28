@@ -23,20 +23,23 @@
         triggerSelector: '[data-layer-target]',
         triggerTargetKey: 'layerTarget',
         layerItemClass: 'tiny-layer-item',
-        layerItemContentClass: 'layer-item-content',
-        layerItemCloseClass: 'layer-item-close',
-        layerItemTpl: '<article class="tiny-layer-item"><div class="layer-item-content"></div></article>',
-        visibilityToggleClass: 'is-visible',
+        layerItemContentClass: 'tiny-layer-item__content',
+        layerItemCloseClass: 'tiny-layer-item__close',
+        layerItemTpl: '<article class="tiny-layer-item"><div class="tiny-layer-item__content"></div></article>',
+        visibilityToggleClass: 'tiny-layer-item--visible',
         layerOptions: {
-            closeBtnMarkup: '<button class="layer-item-close" type="button">x</button>',
+            closeBtnMarkup: '<button class="tiny-layer-item__close" type="button">x</button>',
             autoCloseOthers: true,
             closeOnOverlayClick: true,
             closeOnEscKey: true,
-            events: []
+            onCreate: function() {},
+            onOpen: function() {},
+            onClose: function() {}
         }
     };
     var $root;
     var EVENT_NS = '.tinyLayer';
+    var CLASS_MODIFIER_HIDDEN = 'tiny-layer-hide';
 
     /**
      * Initialize the component
@@ -96,7 +99,7 @@
                 close($evtTarget.data('id'));
             }
             // close layer on click on close btn
-            else if ( $evtTarget.hasClass(conf.layerItemCloseClass) ) {
+            else if ( $evtTarget.hasClass(conf.layerItemCloseClass) || $evtTarget.closest('.' + conf.layerItemCloseClass).length ) {
                 close($evtTarget.closest('.' + conf.layerItemClass).data('id'));
             }
         });
@@ -134,13 +137,11 @@
         }
         // copy all classes from target layer to new layer item
         // except the hide class
-        $newLayer.addClass($sourceLayer.attr('class').replace('tiny-layer-hide', ''));
-        // apply custom events if defined
-        options.events.forEach(function( val ) {
-            $newLayer.on(val);
-        });
+        $newLayer.addClass($sourceLayer.attr('class').replace(CLASS_MODIFIER_HIDDEN, ''));
 
         $root.append($newLayer);
+        options.onCreate.call($newLayer, api);
+
         return true;
     }
 
@@ -161,9 +162,9 @@
             return api;
         }
 
-        var layerOptions = $layer.data('options');
+        var options = $layer.data('options');
 
-        if ( layerOptions.autoCloseOthers === true ) {
+        if ( options.autoCloseOthers === true ) {
             // close every child layer that's visible
             $root.children(conf.visibilityToggleClass).each(function() {
                 close($(this).data('id'));
@@ -173,6 +174,7 @@
         // force layout, to enable css transitions
         $layer.width();
         $layer.addClass(conf.visibilityToggleClass);
+        options.onOpen.call($layer, api);
 
         return api;
     }
@@ -192,12 +194,15 @@
             $layer = $root.children();
         }
 
+        var options = $layer.data('options');
+
         // wait for transitionend event to remove the layer
         $layer.on('transitionend' + EVENT_NS + ' webkitTransitionEnd' + EVENT_NS, function( event ) {
             if ( !$layer.is(event.target) ) return;
             $layer.remove();
         });
         $layer.removeClass(conf.visibilityToggleClass);
+        options.onClose.call($layer, api);
 
         return api;
     }
