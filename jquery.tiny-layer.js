@@ -32,7 +32,7 @@
             autoCloseOthers: true,
             closeOnOverlayClick: true,
             closeOnEscKey: true,
-            events: []
+            onCreate: function() {}
         }
     };
     var $root;
@@ -135,12 +135,10 @@
         // copy all classes from target layer to new layer item
         // except the hide class
         $newLayer.addClass($sourceLayer.attr('class').replace('tiny-layer-hide', ''));
-        // apply custom events if defined
-        options.events.forEach(function( val ) {
-            $newLayer.on(val);
-        });
 
         $root.append($newLayer);
+        options.onCreate.call($newLayer, api);
+
         return true;
     }
 
