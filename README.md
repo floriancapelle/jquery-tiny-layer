@@ -35,7 +35,6 @@ TODO
 - callbacks: onCreate, onBeforeOpen, onOpen, onBeforeClose, onClose
 - demo optimization
   - ajax loading
-- BEM
 - New name: jQuery TopModal
 
 ### API
