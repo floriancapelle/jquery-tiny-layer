@@ -99,7 +99,7 @@
                 close($evtTarget.data('id'));
             }
             // close layer on click on close btn
-            else if ( $evtTarget.hasClass(conf.layerItemCloseClass) ) {
+            else if ( $evtTarget.hasClass(conf.layerItemCloseClass) || $evtTarget.closest('.' + conf.layerItemCloseClass).length ) {
                 close($evtTarget.closest('.' + conf.layerItemClass).data('id'));
             }
         });
