@@ -67,7 +67,7 @@ layerOptions.closeBtnMarkup | string | see js file | markup of the close button 
 layerOptions.autoCloseOthers | boolean | true | close other open layers when opening this layer
 layerOptions.closeOnOverlayClick | boolean | true | close this layer when its overlay was clicked
 layerOptions.closeOnEscKey | boolean | true | close this layer when the escape key was pressed
-layerOptions.events | array | [] | supply jQuery-like events with delegation, delegateTarget is layer item
+layerOptions.onCreate | function | no-op | callback, fires after layer item creation
 
 ## License
 
