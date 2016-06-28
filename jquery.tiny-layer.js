@@ -23,12 +23,12 @@
         triggerSelector: '[data-layer-target]',
         triggerTargetKey: 'layerTarget',
         layerItemClass: 'tiny-layer-item',
-        layerItemContentClass: 'layer-item-content',
-        layerItemCloseClass: 'layer-item-close',
-        layerItemTpl: '<article class="tiny-layer-item"><div class="layer-item-content"></div></article>',
-        visibilityToggleClass: 'is-visible',
+        layerItemContentClass: 'tiny-layer-item__content',
+        layerItemCloseClass: 'tiny-layer-item__close',
+        layerItemTpl: '<article class="tiny-layer-item"><div class="tiny-layer-item__content"></div></article>',
+        visibilityToggleClass: 'tiny-layer-item--visible',
         layerOptions: {
-            closeBtnMarkup: '<button class="layer-item-close" type="button">x</button>',
+            closeBtnMarkup: '<button class="tiny-layer-item__close" type="button">x</button>',
             autoCloseOthers: true,
             closeOnOverlayClick: true,
             closeOnEscKey: true,
@@ -39,6 +39,7 @@
     };
     var $root;
     var EVENT_NS = '.tinyLayer';
+    var CLASS_MODIFIER_HIDDEN = 'tiny-layer-hide';
 
     /**
      * Initialize the component
@@ -136,7 +137,7 @@
         }
         // copy all classes from target layer to new layer item
         // except the hide class
-        $newLayer.addClass($sourceLayer.attr('class').replace('tiny-layer-hide', ''));
+        $newLayer.addClass($sourceLayer.attr('class').replace(CLASS_MODIFIER_HIDDEN, ''));
 
         $root.append($newLayer);
         options.onCreate.call($newLayer, api);
