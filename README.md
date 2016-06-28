@@ -35,6 +35,7 @@ TODO
 - callbacks: onBeforeOpen, onOpen, onBeforeClose, onClose
 - demo optimization
   - ajax loading
+  - callbacks
 - BEM
 - New name: jQuery TopModal
 
