@@ -23,6 +23,10 @@
             height: 100vh;
             font-size: 14px;
             margin: 0;
+        }
+
+        .page-content {
+            margin-top: 5%;
             text-align: center;
         }
 
@@ -57,6 +61,17 @@
             outline: none;
             background: #003A61;
         }
+
+        .modal-1 .tiny-layer-item__content {
+            text-align: center;
+        }
+        .modal-2 .tiny-layer-item__content {
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal-2 .tiny-layer-item__content ul {
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -65,20 +80,30 @@
         <h1>jQuery TinyLayer Demo</h1>
 
         <div class="btn-wrap">
-            <button class="btn btn-default" type="button" data-layer-target="#layer-1">Simple Layer</button>
-            <button class="btn btn-default" type="button" data-layer-target="#layer-2">Modal-like layer</button>
+            <button class="btn btn-default" type="button" data-layer-target="#modal-1">Simple</button>
+            <button class="btn btn-default" type="button" data-layer-target="#modal-2">Modal-like</button>
+            <button class="btn btn-default" type="button" data-layer-target="#modal-3">Ajax</button>
         </div>
     </main>
 
-    <div id="layer-1" class="layer-1 tiny-layer-hide">
-        <h3>Simple Layer</h3>
-        <p>with <b>custom</b> markup and styling</p>
+    <div id="modal-1" class="modal-1 tiny-layer-hide">
+        <h3>Simple</h3>
+        <p>Just a text to display</p>
     </div>
 
-    <div id="layer-2" class="layer-2 tiny-layer-hide" data-close-on-overlay-click="false" data-close-on-esc-key="false" data-close-btn-markup="false">
-        <h3>Modal-like layer</h3>
-        <p>custom events delegated on the layer</p>
+    <div id="modal-2" class="modal-2 tiny-layer-hide" data-close-on-overlay-click="false" data-close-on-esc-key="false" data-close-btn-markup="false">
+        <h3>Modal-like</h3>
+        <ul>
+            <li>Notification is not closeable via close btn, overlay or esc key</li>
+            <li>Custom event to handle user input and close the modal</li>
+        </ul>
         <button class="btn btn-default" type="button">Close layer</button>
+    </div>
+
+    <div id="modal-3" class="modal-3 tiny-layer-hide">
+        <h3>Ajax</h3>
+
+        ...
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -86,14 +111,18 @@
 
     <script>
         $(function( $ ) {
-            $('#layer-2').data({
-                events: [
-                    {'click': function( event ) {
-                        if ( !$(event.target).is('button') ) return;
+            $('#modal-2').data({
+                onCreate: function( api ) {
+                    $(this).on('click', 'button', function() {
+                        api.close('#modal-2');
+                    });
+                }
+            });
 
-                        $.tinyLayer.close('#layer-2');
-                    }}
-                ]
+            $('#modal-3').data({
+                onCreate: function( api ) {
+                    // ajax call
+                }
             });
         });
     </script>
