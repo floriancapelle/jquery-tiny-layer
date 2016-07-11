@@ -1,3 +1,7 @@
+# Plugin has been deprecated - New Plugin: [jQuery FlexModal](https://github.com/floriancapelle/jquery-flex-modal)
+
+-------------------
+
 # tinyLayer
 tinyLayer is a lightweight jQuery plugin for fully customizable basic notifications, modals, popups or any feature alike.
 
